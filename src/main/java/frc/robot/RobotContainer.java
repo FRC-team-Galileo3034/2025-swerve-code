@@ -123,7 +123,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
     } else
     {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+      drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
     }
 
     if (Robot.isSimulation())
@@ -150,7 +150,7 @@ public class RobotContainer
           drivebase.driveToPose(
               new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
                               );
-      joystick1.button(8).whileTrue(Commands.none());
+      joystick1.button(8).onTrue(Commands.none());
       joystick1.button(7).whileTrue(Commands.none());
       joystick1.button(5).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       joystick1.button(6).onTrue(Commands.none());
@@ -173,4 +173,5 @@ public class RobotContainer
   {
     drivebase.setMotorBrake(brake);
   }
+  
 }

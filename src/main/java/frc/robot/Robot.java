@@ -4,9 +4,15 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -21,11 +27,19 @@ public class Robot extends TimedRobot
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private  TalonFX motorArmTalonFX = new TalonFX(9);
+  private SparkMax motorFeederMax = new SparkMax(10, MotorType.kBrushless);
+
+
+  private Joystick joystick2Joystick = new Joystick(1); 
+
+  private RobotContainer m_robotContainer;  
 
   private Timer disabledTimer;
 
-  public Robot()
+  public Robot(){
+    drive = new DifferentialDrive(motorArmTalonFX::set, motorFeederMax::set);
+  }
   {
     instance = this;
   }
@@ -131,6 +145,7 @@ public class Robot extends TimedRobot
     {
       CommandScheduler.getInstance().cancelAll();
     }
+  
   }
 
   /**
