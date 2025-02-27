@@ -4,10 +4,18 @@
 
 package frc.robot;
 
+import java.util.Set;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.fasterxml.jackson.annotation.Nulls;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.units.measure.Power;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -27,7 +35,7 @@ public class Robot extends TimedRobot
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
-  private  TalonFX motorArmTalonFX = new TalonFX(9);
+  private SparkMax motorArmSparkMax = new SparkMax(11, MotorType.kBrushless);
   private SparkMax motorFeederMax = new SparkMax(10, MotorType.kBrushless);
 
 
@@ -37,9 +45,8 @@ public class Robot extends TimedRobot
 
   private Timer disabledTimer;
 
-  public Robot(){
-    drive = new DifferentialDrive(motorArmTalonFX::set, motorFeederMax::set);
-  }
+  public Robot()
+  
   {
     instance = this;
   }
@@ -141,11 +148,13 @@ public class Robot extends TimedRobot
     if (m_autonomousCommand != null)
     {
       m_autonomousCommand.cancel();
-    } else
+    } else      
+    
     {
       CommandScheduler.getInstance().cancelAll();
     }
   
+  motorFeederMax. configure (new SparkMaxConfig(). idleMode (IdleMode. kBrake), null,null);
   }
 
   /**
@@ -154,6 +163,18 @@ public class Robot extends TimedRobot
   @Override
   public void teleopPeriodic()
   {
+
+
+     double armPower = joystick2Joystick.getRawAxis(1); // remember negative sign
+    if (Math.abs(armPower) < 0.05) {
+      armPower = 0;
+    }
+    armPower *= 0.5;
+    motorArmSparkMax.set(armPower);
+
+    // feeder control
+    double rollerPower = joystick2Joystick.getRawAxis(2) - joystick2Joystick.getRawAxis(3);
+    motorFeederMax.set(rollerPower);
   }
 
   @Override

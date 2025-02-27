@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -41,8 +44,8 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> joystick1.getRawAxis(1) * -1,
-                                                                () -> joystick1.getRawAxis(0) * -1)
+                                                                () -> joystick1.getRawAxis(1),
+                                                                () -> joystick1.getRawAxis(0))
                                                             .withControllerRotationAxis(() -> joystick1.getRawAxis(4))
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
@@ -123,7 +126,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
     } else
     {
-      drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
     if (Robot.isSimulation())
@@ -165,8 +168,18 @@ public class RobotContainer
    */
   public Command getAutonomousCommand()
   {
+    return new RunCommand(() -> {
+      drivebase.drive(new Translation2d(1, 0), 0, false);
+    }, drivebase).withTimeout(2);
     // An example command will be run in autonomous
-    return drivebase.getAutonomousCommand("New Auto");
+    // return Commands.run(() -> {
+      
+
+    //   SwerveInputStream inputStream = SwerveInputStream.of(drivebase.getSwerveDrive(), () -> 0.5, () -> 0).robotRelative(true);
+    //   drivebase.drive(inputStream.get());
+    // }).raceWith(new WaitCommand(2).andThen(Commands.run(() -> {
+    //   drivebase.drive(new ChassisSpeeds(0,0,0));
+    // })));
   }
 
   public void setMotorBrake(boolean brake)
