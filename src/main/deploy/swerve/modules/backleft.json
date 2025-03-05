@@ -3,7 +3,11 @@
     "front": -12,
     "left": 12
   },
+<<<<<<< HEAD:src/main/deploy/swerve/modules/backleft.json
   "absoluteEncoderOffset": 316.142578125,
+=======
+  "absoluteEncoderOffset": 310.78125,
+>>>>>>> 1d422e77c660b8c4eaa49e350dfbf976b4a90e41:src/main/deploy/swerve/neo/modules/backleft.json
   "drive": {
     "type": "sparkflex_vortex",
     "id": 1,

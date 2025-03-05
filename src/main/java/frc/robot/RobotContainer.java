@@ -150,6 +150,7 @@ public class RobotContainer
       joystick1.button(6).onTrue(Commands.none());
     } else
     {
+<<<<<<< HEAD
       joystick1.button(1).onTrue((Commands.runOnce(drivebase::zeroGyro)));
       joystick1.button(3).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       // joystick1.button(2).whileTrue(
@@ -160,6 +161,9 @@ public class RobotContainer
       joystick1.button(7).whileTrue(Commands.none());
       // joystick1.button(5).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       joystick1.button(6).onTrue(Commands.none());
+=======
+
+>>>>>>> 1d422e77c660b8c4eaa49e350dfbf976b4a90e41
     }
 
   }
