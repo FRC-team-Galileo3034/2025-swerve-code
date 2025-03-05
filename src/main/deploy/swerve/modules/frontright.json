@@ -3,11 +3,7 @@
     "front": 12,
     "left": -12
   },
-<<<<<<< HEAD:src/main/deploy/swerve/modules/frontright.json
-  "absoluteEncoderOffset": 114.345703125,
-=======
   "absoluteEncoderOffset": 290.21484375,
->>>>>>> 1d422e77c660b8c4eaa49e350dfbf976b4a90e41:src/main/deploy/swerve/neo/modules/frontright.json
   "drive": {
     "type": "sparkmax_vortex",
     "id": 5,

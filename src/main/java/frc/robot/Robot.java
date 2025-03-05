@@ -35,12 +35,6 @@ public class Robot extends TimedRobot
   private static Robot   instance;
   private        Command m_autonomousCommand;
 
-  private SparkMax motorArmSparkMax = new SparkMax(11, MotorType.kBrushless);
-  private SparkMax motorFeederMax = new SparkMax(10, MotorType.kBrushless);
-
-
-  private Joystick joystick2Joystick = new Joystick(1); 
-
   private RobotContainer m_robotContainer;  
 
   private Timer disabledTimer;
@@ -154,7 +148,7 @@ public class Robot extends TimedRobot
       CommandScheduler.getInstance().cancelAll();
     }
   
-  motorFeederMax. configure (new SparkMaxConfig(). idleMode (IdleMode. kBrake), null,null);
+
   }
 
   /**
@@ -164,17 +158,6 @@ public class Robot extends TimedRobot
   public void teleopPeriodic()
   {
 
-
-     double armPower = joystick2Joystick.getRawAxis(1); // remember negative sign
-    if (Math.abs(armPower) < 0.05) {
-      armPower = 0;
-    }
-    armPower *= 0.5;
-    motorArmSparkMax.set(armPower);
-
-    // feeder control
-    double rollerPower = joystick2Joystick.getRawAxis(2) - joystick2Joystick.getRawAxis(3);
-    motorFeederMax.set(rollerPower);
   }
 
   @Override

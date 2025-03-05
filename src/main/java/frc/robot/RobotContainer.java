@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -22,7 +23,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Elbow;
+import frc.robot.commands.Elbow.ElbowManualControl;
+import frc.robot.commands.Shoulder.ShoulderManualControl;
+import frc.robot.subsystems.Elbow.Elbow;
+import frc.robot.subsystems.Shoulder.Shoulder;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -37,6 +41,14 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandJoystick joystick1 = new CommandJoystick(0);
+
+private CommandJoystick joystick2 = new CommandJoystick(1);
+
+  private final Shoulder shoulder = new Shoulder();
+  private final Elbow elbow = new Elbow();
+
+
+
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
@@ -150,20 +162,12 @@ public class RobotContainer
       joystick1.button(6).onTrue(Commands.none());
     } else
     {
-<<<<<<< HEAD
-      joystick1.button(1).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      joystick1.button(3).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      // joystick1.button(2).whileTrue(
-          // drivebase.driveToPose(
-              // new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0)))
-                              // );
-      joystick1.button(8).onTrue(Commands.none());
-      joystick1.button(7).whileTrue(Commands.none());
-      // joystick1.button(5).whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      joystick1.button(6).onTrue(Commands.none());
-=======
+      new Trigger(() -> joystick2.getRawAxis(1) > 0.02).whileTrue(new ShoulderManualControl(shoulder, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(1) < -0.02).whileTrue(new ShoulderManualControl(shoulder, joystick2));
 
->>>>>>> 1d422e77c660b8c4eaa49e350dfbf976b4a90e41
+      new Trigger(() -> joystick2.getRawAxis(5) > 0.02).whileTrue(new ElbowManualControl(elbow, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(5) < -0.02).whileTrue(new ElbowManualControl(elbow, joystick2));
+
     }
 
   }
