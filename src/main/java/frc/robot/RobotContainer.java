@@ -24,10 +24,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Elbow.ElbowManualControl;
-// import frc.robot.commands.Feeder.FeederManualControl;
 import frc.robot.commands.Shoulder.ShoulderManualControl;
-import frc.robot.subsystems.Elbow.Elbow;
-// import frc.robot.subsystems.Fider.feeder;
+import frc.robot.commands.feeder.FeederManualControl;
+import frc.robot.subsystems.Elbow.Elbow; import frc.robot.subsystems.Fider.feeder;
 import frc.robot.subsystems.Shoulder.Shoulder;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -48,7 +47,7 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
 
   private final Shoulder shoulder = new Shoulder();
   private final Elbow elbow = new Elbow();
-  // private final feeder feeder = new feeder();
+  private final feeder feeder = new feeder();
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -142,7 +141,7 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
       drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
     } else
     {
-      drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
+      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     }
 
     if (Robot.isSimulation())
@@ -169,10 +168,10 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
       new Trigger(() -> joystick2.getRawAxis(5) > 0.02).whileTrue(new ElbowManualControl(elbow, joystick2));
       new Trigger(() -> joystick2.getRawAxis(5) < -0.02).whileTrue(new ElbowManualControl(elbow, joystick2));
 
-      // new Trigger(() -> joystick2.getRawAxis(3) > 0.02).whileTrue(new FeederManualControl(feeder, joystick2));
-      // new Trigger(() -> joystick2.getRawAxis(2) < -0.02).whileTrue(new FeederManualControl(feeder, joystick2));
-    }
+      new Trigger(() -> joystick2.getRawAxis(2) > 0.02).whileTrue(new FeederManualControl(feeder, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(3) < -0.02).whileTrue(new FeederManualControl(feeder, joystick2));
 
+    }
   }
 
   /**

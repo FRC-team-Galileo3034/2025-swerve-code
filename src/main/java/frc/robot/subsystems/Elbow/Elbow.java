@@ -8,7 +8,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.subsystems.Shoulder.ShoulderConstants;
+
 
 public class Elbow extends SubsystemBase {
 
@@ -30,7 +30,7 @@ private SparkMax motorElbowMax = new SparkMax(ElbowConstets.ELBOW_ID, MotorType.
     }
 
     public double getAngle(){
-        double angle = elbowEncoder.getPosition() *ShoulderConstants.MOTOR_GEAR_RATIO*360;
+        double angle = elbowEncoder.getPosition() *ElbowConstens.MOTOR_GEAR_RATIO*360;
 
         return angle;
     }
