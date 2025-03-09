@@ -26,7 +26,11 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.Elbow.ElbowManualControl;
 import frc.robot.commands.Shoulder.ShoulderManualControl;
 import frc.robot.commands.feeder.FeederManualControl;
-import frc.robot.subsystems.Elbow.Elbow; import frc.robot.subsystems.Fider.feeder;
+import frc.robot.commands.feeder.newFeeder;
+// import frc.robot.commands.feeder.FeederManualControl;
+import frc.robot.subsystems.Elbow.Elbow;
+import frc.robot.subsystems.Fider.feeder;
+// import frc.robot.subsystems.Fider.feeder;
 import frc.robot.subsystems.Shoulder.Shoulder;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -47,7 +51,7 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
 
   private final Shoulder shoulder = new Shoulder();
   private final Elbow elbow = new Elbow();
-  private final feeder feeder = new feeder();
+  private final feeder m_feeder = new feeder();
 
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -162,15 +166,17 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
       joystick1.button(6).onTrue(Commands.none());
     } else
     {
-      new Trigger(() -> joystick2.getRawAxis(1) > 0.02).whileTrue(new ShoulderManualControl(shoulder, joystick2));
-      new Trigger(() -> joystick2.getRawAxis(1) < -0.02).whileTrue(new ShoulderManualControl(shoulder, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(1) > 0.05).whileTrue(new ShoulderManualControl(shoulder, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(1) < -0.05).whileTrue(new ShoulderManualControl(shoulder, joystick2));
 
-      new Trigger(() -> joystick2.getRawAxis(5) > 0.02).whileTrue(new ElbowManualControl(elbow, joystick2));
-      new Trigger(() -> joystick2.getRawAxis(5) < -0.02).whileTrue(new ElbowManualControl(elbow, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(5) > 0.05).whileTrue(new ElbowManualControl(elbow, joystick2));
+      new Trigger(() -> joystick2.getRawAxis(5) < -0.05).whileTrue(new ElbowManualControl(elbow, joystick2));
 
-      new Trigger(() -> joystick2.getRawAxis(2) > 0.02).whileTrue(new FeederManualControl(feeder, joystick2));
-      new Trigger(() -> joystick2.getRawAxis(3) < -0.02).whileTrue(new FeederManualControl(feeder, joystick2));
+      new Trigger(()-> joystick2.getRawAxis(2) > 0.05).whileTrue(new FeederManualControl (m_feeder, joystick2));
+      new Trigger(()-> joystick2.getRawAxis(3) < -0.05).whileTrue(new FeederManualControl (m_feeder, joystick2));
 
+    //new Trigger(() -> joystick1.button(5).getAsBoolean()).onTrue(drivebase.sysIdAngleMotorCommand());
+      System.out.println("Not in test mode");
     }
   }
 
@@ -183,7 +189,7 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
   {
     return new RunCommand(() -> {
       drivebase.drive(new Translation2d(1, 0), 0, false);
-    }, drivebase).withTimeout(2);
+    }, drivebase).withTimeout(15);
     // An example command will be run in autonomous
     // return Commands.run(() -> {
       

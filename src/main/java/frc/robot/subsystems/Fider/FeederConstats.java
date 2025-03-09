@@ -1,5 +1,5 @@
 package frc.robot.subsystems.Fider;
 
 public class FeederConstats {
-    public static final int FEEDER_ID = 11;
+    public static final int FEEDER_ID = 10;
 }

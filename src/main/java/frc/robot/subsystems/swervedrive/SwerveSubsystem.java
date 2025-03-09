@@ -311,7 +311,6 @@ public class SwerveSubsystem extends SubsystemBase
                                         newSetpoint.feedforwards().linearForces());
                       prevSetpoint.set(newSetpoint);
                       previousTime.set(newTime);
-
                     });
   }
 

@@ -11,19 +11,18 @@ public class FeederManualControl extends Command {
     private final CommandJoystick commandJoystick;
 
     public FeederManualControl(feeder feeder, CommandJoystick joystick2Joystick){
-        this.feeder=feeder;
+        this.feeder = feeder;
         commandJoystick=joystick2Joystick;
         addRequirements(feeder);
     }
     
     @Override
     public void execute() {
-        feeder.setVoltage(commandJoystick.getRawAxis(2));
-       feeder.setVoltage(-commandJoystick.getRawAxis(3));
+        feeder.move(commandJoystick.getRawAxis(2) - commandJoystick.getRawAxis(3));
     }
 
     @Override
     public void end(boolean interrupted) {
-        feeder.setVoltage(0);
+        feeder.move(0);
     }
 }
