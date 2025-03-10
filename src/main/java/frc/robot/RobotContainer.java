@@ -166,6 +166,8 @@ private CommandJoystick joystick2 = new CommandJoystick(1);
       joystick1.button(6).onTrue(Commands.none());
     } else
     {
+      joystick1.button(1).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
       new Trigger(() -> joystick2.getRawAxis(1) > 0.05).whileTrue(new ShoulderManualControl(shoulder, joystick2));
       new Trigger(() -> joystick2.getRawAxis(1) < -0.05).whileTrue(new ShoulderManualControl(shoulder, joystick2));
 
